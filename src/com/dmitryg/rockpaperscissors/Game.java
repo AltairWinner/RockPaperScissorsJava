@@ -1,5 +1,8 @@
 package com.dmitryg.rockpaperscissors;
 
+import java.io.IOError;
+import java.util.Scanner;
+
 class Game {
 
     private int playerWins = 0;
@@ -10,16 +13,18 @@ class Game {
     Game(Player player, Computer computer) {
         pl = player;
         bot = computer;
+
+        Menu();
     }
 
-    void Play() {
+    private void Play() {
         int playerChoice = pl.Turn();
         int botChoice = bot.Turn();
 
         DecideWinner(playerChoice, botChoice);
     }
 
-    void ShowScores() {
+    private void ShowScores() {
         System.out.println("Player " + playerWins + ":" + computerWins + " Computer\n");
     }
 
@@ -55,5 +60,39 @@ class Game {
             computerWins++;
         }
         System.out.println();
+    }
+
+
+    private void Menu() {
+        System.out.println("Rock-Paper-Scissors!");
+        System.out.println("Game Menu");
+        System.out.print(" 1. Play\n 2. Scores\n 3. Exit\n");
+
+        int choice = GetMenuChoice();
+        if(choice == 1)
+            Play();
+        else if(choice == 2)
+            ShowScores();
+        else
+            return;
+
+        Menu();
+    }
+
+
+    private int GetMenuChoice() {
+        Scanner sc = new Scanner(System.in);
+        boolean correct = false;
+        int choice = -1;
+
+        while(!correct) {
+            try {
+                choice = sc.nextInt();
+                correct = true;
+            } catch (IOError error) {
+                System.out.println("Incorrect input. Please try again.");
+            }
+        }
+        return choice;
     }
 }
